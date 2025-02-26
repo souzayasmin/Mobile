@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
+  Button,
 } from "react-native";
 import api from "../axios/axios";
 
-export default function CadastroScreen() {
+export default function Cadastro({navigation}) {
   const [user, setUser] = useState({
     cpf: "",
     email: "",
@@ -20,15 +21,15 @@ export default function CadastroScreen() {
 
   async function handleCadastro() {
     await api.postCadastro(user).then(
-        (response)=>{
-            console.log(response.data.message)
-            Alert.alert(response.data.message)
-        },
-        (error)=>{
-            console.log(error)
-            Alert.alert('Erro',error.response.data.error)
-        }
-    )
+      (response) => {
+        console.log(response.data.message);
+        Alert.alert(response.data.message);
+      },
+      (error) => {
+        console.log(error);
+        Alert.alert("Erro", error.response.data.error);
+      }
+    );
   }
 
   return (
@@ -68,6 +69,10 @@ export default function CadastroScreen() {
       <TouchableOpacity onPress={handleCadastro} style={styles.button}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
+      <Button
+        title="Cadastro"
+        onPress={() => navigation.navigate("Cadastro")}
+      />
     </View>
   );
 }
