@@ -10,12 +10,14 @@ import {
 } from "react-native";
 import api from "../axios/axios";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native"; 
 
-export default function Login({ navigation }) {
+export default function Login() {
+  const navigation = useNavigation();
   const [user, setUser] = useState({
     email: "",
     password: "",
-    showPassord: false,
+    showPassword: false, 
   });
 
   async function handleLogin() {
@@ -30,6 +32,7 @@ export default function Login({ navigation }) {
       }
     );
   }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Faça Login</Text>
@@ -45,17 +48,17 @@ export default function Login({ navigation }) {
         <TextInput
           placeholder="Senha"
           value={user.password}
-          secureTextEntry={user.showPassord}
+          secureTextEntry={user.showPassword} // Corrigido aqui
           onChangeText={(value) => {
             setUser({ ...user, password: value });
           }}
           style={styles.passwordInput}
         />
         <TouchableOpacity
-          onPress={() => setUser({ ...user, showPassord: !user.showPassord })}
+          onPress={() => setUser({ ...user, showPassword: !user.showPassword })}
         >
           <Ionicons
-            name={user.showPassord ? "eye-off" : "eye"}
+            name={user.showPassword ? "eye-off" : "eye"}
             size={24}
             color="gray"
           />
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     paddingRight: 10,
-    borderBottomWidht: 1,
+    borderBottomWidth: 1, 
   },
   passwordInput: {
     flex: 1,
