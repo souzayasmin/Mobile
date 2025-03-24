@@ -9,11 +9,13 @@ import {
   Button,
 } from "react-native";
 import api from "../axios/axios";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Login({ navigation }) {
   const [user, setUser] = useState({
     email: "",
     password: "",
+    showPassord: false,
   });
 
   async function handleLogin() {
@@ -39,14 +41,26 @@ export default function Login({ navigation }) {
         }}
         style={styles.input}
       />
-      <TextInput
-        placeholder="Senha"
-        value={user.password}
-        onChangeText={(value) => {
-          setUser({ ...user, password: value });
-        }}
-        style={styles.input}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          placeholder="Senha"
+          value={user.password}
+          secureTextEntry={user.showPassord}
+          onChangeText={(value) => {
+            setUser({ ...user, password: value });
+          }}
+          style={styles.passwordInput}
+        />
+        <TouchableOpacity
+          onPress={() => setUser({ ...user, showPassord: !user.showPassord })}
+        >
+          <Ionicons
+            name={user.showPassord ? "eye-off" : "eye"}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
@@ -78,11 +92,22 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
-    width: "100%",
+    width: "30%",
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    paddingRight: 10,
+    borderBottomWidht: 1,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 40,
   },
 });
