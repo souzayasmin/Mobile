@@ -24,7 +24,7 @@ export default function Login() {
     await api.postLogin(user).then(
       (response) => {
         Alert.alert("OK", response.data.message);
-        navigation.navigate("Home"); // Redireciona para a tela Home após login
+        navigation.navigate("EventosScreen");
       },
       (error) => {
         console.log(error);
