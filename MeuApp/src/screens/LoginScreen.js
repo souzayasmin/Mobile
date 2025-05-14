@@ -23,8 +23,8 @@ export default function Login() {
 
   async function saveToken(token) {
     await SecureStore.setItemAsync("token", token);
-    console.log(token);
   }
+
   async function handleLogin() {
     await api.postLogin(user).then(
       (response) => {
@@ -54,7 +54,7 @@ export default function Login() {
         <TextInput
           placeholder="Senha"
           value={user.password}
-          secureTextEntry={user.showPassword} // Corrigido aqui
+          secureTextEntry={!user.showPassword}
           onChangeText={(value) => {
             setUser({ ...user, password: value });
           }}
