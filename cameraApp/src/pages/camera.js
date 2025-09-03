@@ -1,6 +1,8 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRef, useState } from "react";
+import { createEvento } from "../axios/api";
 import {
+  Alert,
   Button,
   StyleSheet,
   Text,
@@ -32,9 +34,34 @@ export default function Cam() {
 
   async function takePicture() {
     if (camRef.current) {
-      const data = await camRef.current.takePictureAsync();
-      setCapturedPhoto(data.uri);
-      setOpen(true);
+      try {
+        const data = await camRef.current.takePictureAsync();
+        setCapturedPhoto(data.uri);
+        setOpen(true);
+
+        // Simulando dados do formulário
+        const form = {
+          nome: "Evento",
+          descricao: "Evento teste Image Mobile",
+          data_hora: "2025-09-03 09:00:00",
+          local: "Franca",
+          fk_id_organizador: 1,
+        };
+
+        const response = await createEvento(form, data.uri);
+        console.log("Evento criado", response.data);
+
+        Alert.alert(
+          "Sucesso",
+          response.data.mensagem || "Evento criado com sucesso!"
+        );
+      } catch (error) {
+        console.error("Erro ao criar evento:", error);
+        Alert.alert(
+          "Erro",
+          error?.response?.data?.error || "Erro desconhecido."
+        );
+      }
     }
   }
 
@@ -62,9 +89,15 @@ export default function Cam() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center" },
-  camera: { flex: 1 },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+  },
   buttonTake: {
     position: "absolute",
     bottom: 50,
